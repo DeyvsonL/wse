@@ -20,7 +20,7 @@ public class InvertedIndex {
     Map<Integer,String> documentIndice=new HashMap<>();
 
     public InvertedIndex() throws IOException {
-        List<String> lines = Files.readAllLines(Paths.get("C:\\Users\\jg3ad\\git\\wse\\src\\main\\resources\\file\\data.csv"));
+        List<String> lines = Files.readAllLines(new File(getClass().getResource("/file/data.csv").getPath()).toPath());
         List<String> attrs = Arrays.asList(lines.get(0).split(","));
         lines = lines.subList(1,lines.size());
         //URL,nome,telefone,CRP,preço
@@ -31,7 +31,7 @@ public class InvertedIndex {
         for(String line : lines) {
             String[] values = line.split(",");
             Map<String, String[]> documentMap = new HashMap<>();
-            for (int j= 1; j < attrs.size(); j++) {
+            for (int j= 0; j < attrs.size(); j++) {
                 final int jj = j;
                 documentMap.put(attrs.get(j), values[j].split(" +"));
                 bagOfWord.addAll(
@@ -45,10 +45,9 @@ public class InvertedIndex {
             documentTerms.put(i,documentMap);
             i++;
         }
-
         for(String term : bagOfWord){
             for(Map.Entry<Integer, Map<String, String[]>> documentTerm:documentTerms.entrySet()) {
-                documentTerm.getValue().getOrDefault(term, new String[0]);
+                System.out.println(Arrays.toString(documentTerm.getValue().getOrDefault(term, new String[0])));
                 Map<Integer, Integer> documentIdf = arquivo.getOrDefault(term, new HashMap<>());
                 documentIdf.put(documentTerm.getKey(), 1);
                 arquivo.put(term, documentIdf);

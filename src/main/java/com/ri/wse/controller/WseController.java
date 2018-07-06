@@ -49,23 +49,22 @@ public class WseController {
             queryItems.add(nome);
         }
         if(crp!=null&&!crp.isEmpty()){
-            crp="nome."+crp;
+            crp="CRP."+crp;
             queryItems.add(crp);
         }
         if(telefone!=null&&!telefone.isEmpty()){
-            telefone="nome."+telefone;
+            telefone="telefone."+telefone;
             queryItems.add(telefone);
         }
         if (preco != null&&!preco.isEmpty()) {
-            preco = "nome." + preco;
+            preco = "preço." + preco;
             queryItems.add(preco);
         }
         InvertedIndex ii = new InvertedIndex();
         Ranker ranker = new Ranker(ii);
-        List<String> items = ranker.rank(queryItems,true);
+        List<String> items = ranker.rank(queryItems,false);
         ModelAndView modelAndView = new ModelAndView("/result");
-        modelAndView.addObject("");
+        modelAndView.addObject("items",items);
         return modelAndView;
     }
-
 }

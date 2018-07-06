@@ -100,8 +100,8 @@
 
                         <div class="post-description">
                             <ul th:each="item : ${items}" class="navbar-nav">
-                                <li class="nav-item">
-                                    <a class="nav-link js-scroll-trigger" href="#" th:text="${item}"></a>
+                                <li class="">
+                                    <a class="nav-link js-scroll-trigger" th:href="${item}" th:text="${item}"></a>
                                 </li>
                             </ul>
                         </div>
