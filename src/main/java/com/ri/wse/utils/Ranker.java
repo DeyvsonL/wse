@@ -1,7 +1,5 @@
 package com.ri.wse.utils;
 
-import javafx.util.Pair;
-
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
