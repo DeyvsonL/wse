@@ -1,17 +1,10 @@
 package com.ri.wse.utils;
 
-import org.w3c.dom.Node;
-
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class InvertedIndex {
     public Hashtable<String, Map<Integer, Integer>> arquivo = new Hashtable<>();
