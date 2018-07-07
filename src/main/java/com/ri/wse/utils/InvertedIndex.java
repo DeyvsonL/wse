@@ -22,9 +22,10 @@ public class InvertedIndex {
 
         Charset charset = Charset.forName("ISO-8859-1");
         List<String> lines = Files.readAllLines(wiki_path, charset);
+        */
         List<String> attrs = Arrays.asList(lines.get(0).split(","));
         lines = lines.subList(1,lines.size());
-        */
+        
         //URL,nome,telefone,CRP,preço
 
 
