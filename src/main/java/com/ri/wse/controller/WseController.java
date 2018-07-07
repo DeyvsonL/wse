@@ -19,14 +19,15 @@ public class WseController {
 
 
     @RequestMapping(value = "/livre", method = RequestMethod.GET)
-    public ModelAndView login(String query){
+    public ModelAndView login(String query) throws IOException {
         System.out.println(query);
         List<String> queryItems = new ArrayList<>();
         queryItems.add(query);
-        List<URL> items=null;
-        //List<URL> items = RANK.rank(queryItems,true);
+        InvertedIndex ii = new InvertedIndex();
+        Ranker ranker = new Ranker(ii);
+        List<String> items = ranker.rank(queryItems,false);
         ModelAndView modelAndView = new ModelAndView("/result");
-        modelAndView.addObject("");
+        modelAndView.addObject("items",items);
         return modelAndView;
     }
 

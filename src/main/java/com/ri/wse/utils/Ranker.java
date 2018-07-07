@@ -39,10 +39,10 @@ public class Ranker {
         return termOrder;
     }
 
-    private Pair<Map<Integer, double[]>, Map<Integer, double[]>> calculateDocumentVectors(Map<String, Map<Integer, Integer>> termDocs, Map<String, Integer> termFreqs, Map<String, Integer> termOrder) {
+    private Pair<Map<Integer, double[]>, Map<Integer, double[]>> calculateDocumentVectors(Map<String, Map<Integer, Double>> termDocs, Map<String, Integer> termFreqs, Map<String, Integer> termOrder) {
         Set<Integer> docIndices = new HashSet<>();
 
-        for (Map<Integer, Integer> docIdIdf : termDocs.values()) {
+        for (Map<Integer, Double> docIdIdf : termDocs.values()) {
             docIndices.addAll(docIdIdf.keySet());
         }
 
@@ -58,11 +58,11 @@ public class Ranker {
         return new Pair<>(documentTfVectors, documentTfIdfVectors);
     }
 
-    private double[] calculateDocumentTfIdfVector(int documentIndex, boolean tfOnly, Map<String, Map<Integer, Integer>> termDocs, Map<String, Integer> termFreqs,Map<String, Integer> termOrder) {
+    private double[] calculateDocumentTfIdfVector(int documentIndex, boolean tfOnly, Map<String, Map<Integer, Double>> termDocs, Map<String, Integer> termFreqs,Map<String, Integer> termOrder) {
         Map<Integer, Double> indicesTdIdf = new HashMap<>();
-        for (Map.Entry<String, Map<Integer, Integer>> entry : termDocs.entrySet()) {
+        for (Map.Entry<String, Map<Integer, Double>> entry : termDocs.entrySet()) {
             int termTfIdfArrayIndex = termOrder.get(entry.getKey());
-            int termFrequencyInDocument = entry.getValue().getOrDefault(documentIndex, 0);
+            double termFrequencyInDocument = entry.getValue().getOrDefault(documentIndex, 0.0);
             double tf = tfOnly ? (termFrequencyInDocument > 0 ? 1 : 0) : (termFrequencyInDocument == 0 ? 0 : 1 + Math.log(termFrequencyInDocument));
             double idf = tfOnly ? 1 : Math.log(termDocs.size() / (double) termFreqs.get(entry.getKey()));
 
@@ -93,17 +93,17 @@ public class Ranker {
             docRank.put(docVector.getKey(), calculateCossineBetweenVectors(queryVector, 1, docVector.getValue(), mag));
         }
 
-        return docRank.entrySet().stream().sorted((p1, p2) -> (int) Math.signum(p2.getValue() - p1.getValue()))
+        return docRank.entrySet().stream().sorted((p1, p2) -> (int) Math.signum(p1.getValue() - p2.getValue()))
                 .map(Map.Entry::getKey)
                 .map(id -> invertedIndex.documentIndice.get(id))
                 .collect(Collectors.toList());
     }
 
-    private double[] calculateQueryTfIdfVector(List<String> query, boolean tfOnly, Map<String, Map<Integer, Integer>> termDocs, Map<String, Integer> termFreqs,Map<String, Integer> termOrder) {
+    private double[] calculateQueryTfIdfVector(List<String> query, boolean tfOnly, Map<String, Map<Integer, Double>> termDocs, Map<String, Integer> termFreqs,Map<String, Integer> termOrder) {
 
         Map<Integer, Double> indicesTdIdf = new HashMap<>();
 
-        for (Map.Entry<String, Map<Integer, Integer>>  termDocEntry:termDocs.entrySet()) {
+        for (Map.Entry<String, Map<Integer, Double>>  termDocEntry:termDocs.entrySet()) {
             int termTfIdfArrayIndex = termOrder.get(termDocEntry.getKey());
             boolean queryContainsTerm = query.stream()
                     .anyMatch(queryTerm -> queryTerm.toLowerCase().contains(termDocEntry.getKey().toLowerCase())
