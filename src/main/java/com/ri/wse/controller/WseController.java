@@ -26,7 +26,7 @@ public class WseController {
         InvertedIndex ii = new InvertedIndex();
         Ranker ranker = new Ranker(ii);
         List<String> items = ranker.rank(queryItems,false);
-        ModelAndView modelAndView = new ModelAndView("/result");
+        ModelAndView modelAndView = new ModelAndView("result");
         modelAndView.addObject("items",items);
         return modelAndView;
     }
